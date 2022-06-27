@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "sass": "^1.53.0"
+  },
+  "name": "blog-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass" : "sass lib/scss/main.scss assets/css/styles.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

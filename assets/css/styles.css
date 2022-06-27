@@ -1,0 +1,213 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #1d2456 #d7d7d7;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background: #f0f3ee;
+}
+
+nav {
+  position: fixed;
+  width: 100%;
+  z-index: 20;
+  background-color: #f0f3ee;
+  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.1);
+}
+nav::before {
+  position: absolute;
+  background: #1d2456;
+  content: "";
+  width: 100%;
+  height: 0;
+  left: 0;
+  top: 0;
+  transition: height 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: -1;
+}
+nav:hover {
+  color: #f0f3ee;
+}
+nav:hover::before {
+  height: 100%;
+}
+nav:hover .active {
+  color: #f0f3ee;
+}
+nav:hover .active:before {
+  background-color: #f0f3ee;
+}
+nav:hover svg {
+  fill: #f0f3ee;
+}
+nav:hover button {
+  background-color: #f8475d;
+  color: #f0f3ee;
+}
+nav:hover .nav__left > a {
+  color: #f0f3ee;
+}
+nav .nav__inner {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 2.25rem;
+}
+nav ul {
+  list-style: none;
+  gap: 1.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  padding-left: 42px;
+}
+@media screen and (min-width: 1024px) {
+  nav ul {
+    width: auto;
+    flex-direction: row;
+    gap: 2.625rem;
+    padding-left: 0;
+  }
+}
+nav ul li a {
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: 600;
+  color: #aeaeae;
+  position: relative;
+}
+nav ul li a::after {
+  transform: scale(1.2);
+  position: absolute;
+  color: #d7d7d7;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+  content: attr(data-link);
+  opacity: 0;
+  transition: all 0.3s;
+}
+nav ul li a:hover:after {
+  transform: scale(1);
+  opacity: 1;
+}
+nav ul li .active {
+  color: #1d2456;
+  position: relative;
+  transition: color 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+}
+nav ul li .active:before {
+  content: "";
+  position: absolute;
+  border-radius: 5px;
+  background-color: #1d2456;
+  width: 12px;
+  height: 5px;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: background-color 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+}
+nav button {
+  filter: drop-shadow(0px 2px 2px rgba(255, 168, 0, 0.2));
+  border-radius: 4px;
+  color: #f8475d;
+  background-color: #f0f3ee;
+  border: 1px solid #f8475d;
+  padding: 0.625rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav__left {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.nav__left .nav--hidden {
+  display: none;
+}
+@media screen and (min-width: 1024px) {
+  .nav__left .nav--hidden {
+    display: flex;
+  }
+}
+.nav__left svg {
+  height: 30px;
+  fill: #1d2456;
+  cursor: pointer;
+  transition: fill 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+}
+@media screen and (min-width: 1024px) {
+  .nav__left svg {
+    display: none;
+  }
+}
+.nav__left > a {
+  display: flex;
+  gap: 0.5rem;
+  color: #1d2456;
+  font-size: 1.75rem;
+  transition: color 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+  font-weight: 600;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container {
+  width: min(95%, 1300px);
+  margin: auto;
+}
+
+.connect__menu {
+  z-index: 9999;
+  position: absolute;
+  background: #f8475d;
+  color: #f0f3ee;
+  border-radius: 6px;
+  min-width: 180px;
+  opacity: 1;
+  transition: opacity 1270ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.connect__menu ul {
+  padding-block: 0.25rem;
+}
+.connect__menu ul li {
+  cursor: pointer;
+  padding: 0.25rem 1rem;
+  list-style: none;
+  white-space: nowrap;
+  user-select: none;
+}
+.connect__menu ul li:hover {
+  background-color: #c6394a;
+}
+
+.connect__menu--hidden {
+  opacity: 0;
+}
+
+/*# sourceMappingURL=styles.css.map */
