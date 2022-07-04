@@ -97,6 +97,10 @@ const createRegisterModal = () => {
 };
 
 const submitLogin = () => {
+
+  let existingMsg = document.querySelector('.form__error__msg');
+  if (existingMsg) existingMsg.remove();
+
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -113,7 +117,7 @@ const submitLogin = () => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:8001/login.php", requestOptions)
+  fetch("./login.php", requestOptions)
     .then((response) => response.json())
     .then((result) => {
       // If failed to login
@@ -190,9 +194,8 @@ const adjustElementPosition = (element) => {
   let connectBtnRect = connectBtn.getBoundingClientRect();
   let connectMenuRect = element.getBoundingClientRect();
 
-  element.style.left = `${
-    connectBtnRect.left - (connectMenuRect.width - connectBtnRect.width)
-  }px`;
+  element.style.left = `${connectBtnRect.left - (connectMenuRect.width - connectBtnRect.width)
+    }px`;
   element.style.top = `${connectBtnRect.top + connectBtnRect.height + 8}px`;
 };
 
@@ -236,9 +239,16 @@ window.onload = () => {
     navInner.appendChild(logoutBtn);
 
     logoutBtn.onclick = () => {
+
       sessionStorage.clear();
-      location.reload();
+
+      const logoutUrl = "./logout.php";
+
+      fetch(logoutUrl)
+        .then((response) => location.reload())
+        .catch(err => console.error('error:' + err));
     };
+
   } else {
     connectBtn = document.createElement("button");
     let loginLogo = document.createElement("i");

@@ -75,7 +75,7 @@ nav {
     }
 
     .nav__left {
-      & > a {
+      &>a {
         color: $bg;
       }
     }
@@ -196,7 +196,7 @@ nav {
     }
   }
 
-  & > a {
+  &>a {
     display: flex;
     gap: 0.5rem;
     color: $text;
@@ -283,6 +283,8 @@ main {
       margin-bottom: 1.25rem;
       overflow: hidden;
       display: flex;
+      position: relative;
+      color: #f0f3ee;
 
       img {
         width: 100%;
@@ -290,6 +292,23 @@ main {
         object-fit: cover;
         transition: all 0.3s ease;
       }
+
+      i {
+        position: absolute;
+        top: 15px;
+        z-index: 110;
+        right: 15px;
+        cursor: pointer;
+        background-color: #f8475d;
+        border: 3px solid #f0f3ee;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        padding: 10px;
+      }
+
     }
 
     .article__category {
@@ -339,18 +358,22 @@ main {
         display: flex;
         align-items: center;
         gap: 0.25rem;
+
         i {
           color: #8e92ab;
         }
+
         span {
           position: relative;
           cursor: pointer;
           font-weight: 500;
           transition: all 0.3s ease;
           color: $text;
+
           &:hover {
             color: $accent;
           }
+
           &::after {
             position: absolute;
             content: "";
@@ -361,6 +384,7 @@ main {
             transition: all 0.3s;
             left: 0;
           }
+
           &:hover:after {
             width: 100%;
           }
@@ -391,7 +415,8 @@ form {
   //   align-items: center;
   display: none;
 
-  -webkit-animation-name: fadeIn; /* Fade in the background */
+  -webkit-animation-name: fadeIn;
+  /* Fade in the background */
   -webkit-animation-duration: 0.4s;
   animation-name: fadeIn;
   animation-duration: 0.4s;
@@ -405,7 +430,8 @@ form {
     display: flex;
     flex-direction: column;
 
-    -webkit-animation-name: slideIn; /* Slide in the form */
+    -webkit-animation-name: slideIn;
+    /* Slide in the form */
     -webkit-animation-duration: 0.4s;
     animation-name: slideIn;
     animation-duration: 0.4s;
@@ -460,6 +486,28 @@ form {
   }
 }
 
+.add__article__btn {
+  position: fixed;
+  bottom: 40px;
+  z-index: 110;
+  right: 40px;
+  cursor: pointer;
+  background-color: $accent;
+  border: 3px solid $bg;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 10px;
+
+  i {
+    font-size: 1.75rem;
+    color: $bg;
+  }
+
+}
+
 /* Add Animation */
 @-webkit-keyframes slideIn {
   from {
@@ -479,6 +527,7 @@ form {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -488,6 +537,7 @@ form {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

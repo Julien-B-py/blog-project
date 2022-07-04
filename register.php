@@ -36,17 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die;
         }
 
-
-        // Create connection
-        // Need to uncomment extension=pdo_mysql in php.ini first
-        try {
-            $bdd = new PDO("mysql:host=localhost;dbname=blogproject", "root", "");
-        } catch (PDOException $e) {
-            die($e->getMessage());
-        }
+        require_once('./db_connection.php');
 
         // Query
-        $preparedRequest = $bdd->prepare("INSERT INTO `users` (`mail`, `last_name`, `first_name`, `birth_date`, `password`, `is_admin`) VALUES (:email, :lastname, :firstname, :birthdate, :passw, 0)");
+        $preparedRequest = $bdd->prepare("INSERT INTO `users` (`mail`, `lastname`, `firstname`, `birthdate`, `password`, `is_admin`) VALUES (:email, :lastname, :firstname, :birthdate, :passw, 0)");
 
         $preparedRequest->bindValue(":email", $email, PDO::PARAM_STR);
         $preparedRequest->bindValue(":lastname", $lastName, PDO::PARAM_STR);
@@ -56,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $result = $preparedRequest->execute();
 
-        header("location: index.php");
     }
 }
+
+header("location: index.html");

@@ -244,12 +244,29 @@ main {
   margin-bottom: 1.25rem;
   overflow: hidden;
   display: flex;
+  position: relative;
+  color: #f0f3ee;
 }
 .articles article .article__img img {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
   transition: all 0.3s ease;
+}
+.articles article .article__img i {
+  position: absolute;
+  top: 15px;
+  z-index: 110;
+  right: 15px;
+  cursor: pointer;
+  background-color: #f8475d;
+  border: 3px solid #f0f3ee;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 10px;
 }
 .articles article .article__category {
   font-size: 0.75rem;
@@ -337,7 +354,8 @@ form {
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
   display: none;
-  -webkit-animation-name: fadeIn; /* Fade in the background */
+  -webkit-animation-name: fadeIn;
+  /* Fade in the background */
   -webkit-animation-duration: 0.4s;
   animation-name: fadeIn;
   animation-duration: 0.4s;
@@ -350,7 +368,8 @@ form .form__inner {
   margin: 3vw auto;
   display: flex;
   flex-direction: column;
-  -webkit-animation-name: slideIn; /* Slide in the form */
+  -webkit-animation-name: slideIn;
+  /* Slide in the form */
   -webkit-animation-duration: 0.4s;
   animation-name: slideIn;
   animation-duration: 0.4s;
@@ -394,6 +413,26 @@ form .form__inner button {
   border: none;
   font-size: 1rem;
   font-family: "Roboto", sans-serif;
+  color: #f0f3ee;
+}
+
+.add__article__btn {
+  position: fixed;
+  bottom: 40px;
+  z-index: 110;
+  right: 40px;
+  cursor: pointer;
+  background-color: #f8475d;
+  border: 3px solid #f0f3ee;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 10px;
+}
+.add__article__btn i {
+  font-size: 1.75rem;
   color: #f0f3ee;
 }
 
