@@ -16,6 +16,7 @@ let articles;
 let notAllowed;
 
 let articleCategories;
+let selectedArticle;
 
 fetch(articleCategoriesUrl)
     .then((response) => response.json())
@@ -36,6 +37,13 @@ fetch(articlesUrl)
 
 
 const createArticles = () => {
+
+    // Remove all existing articles if they exist before refreshing the display
+    const existingArticles = document.querySelectorAll("article");
+    if (existingArticles) {
+        existingArticles.forEach(article => article.remove());
+    }
+
     articles.forEach(article => {
         // Create a new article
         let newArticle = document.createElement("article");
@@ -64,6 +72,23 @@ const createArticles = () => {
         articleContent.textContent = article.content;
         newArticle.appendChild(articleContent);
 
+        // Create article user interactions (likes / comments)
+        let articleSocial = document.createElement("div");
+        articleSocial.classList.add("article__social");
+        let articleLikes = document.createElement("div");
+        articleLikes.classList.add("article__likes");
+        let articleLikesIcon = document.createElement("i");
+        articleLikesIcon.classList.add("fa-solid", "fa-thumbs-up");
+        articleLikes.appendChild(articleLikesIcon);
+        let articleComments = document.createElement("div");
+        articleComments.classList.add("article__comments");
+        let articleCommentsIcon = document.createElement("i");
+        articleCommentsIcon.classList.add("fa-solid", "fa-comment");
+        articleComments.appendChild(articleCommentsIcon);
+        articleSocial.appendChild(articleLikes);
+        articleSocial.appendChild(articleComments);
+        newArticle.appendChild(articleSocial);
+
         // Create article footer (author / date)
         let articleFooter = document.createElement("div");
         articleFooter.classList.add("article__footer");
@@ -75,6 +100,12 @@ const createArticles = () => {
         articleAuthorText.textContent = `${article.first_name} ${article.last_name}`;
         articleAuthor.appendChild(articleAuthorIcon);
         articleAuthor.appendChild(articleAuthorText);
+        // Add logo close to username to display admin rank
+        if (article.user_admin) {
+            let articleAuthorAdmin = document.createElement("i");
+            articleAuthorAdmin.classList.add("fa-solid", "fa-circle-check");
+            articleAuthor.appendChild(articleAuthorAdmin);
+        }
         articleFooter.appendChild(articleAuthor);
         let articleDate = document.createElement("div");
         articleDate.classList.add("article__date");
@@ -86,16 +117,79 @@ const createArticles = () => {
         articleFooter.appendChild(articleDate);
         newArticle.appendChild(articleFooter);
 
+        // Delete article button
         if (!notAllowed) {
             let articleDeleteIcon = document.createElement("i");
             articleDeleteIcon.classList.add("fa-solid", "fa-trash");
             articleImgDiv.appendChild(articleDeleteIcon);
+            articleDeleteIcon.onclick = () => {
+                selectedArticle = article.id;
+                createDeleteModal();
+            };
         }
 
         // Add the article to articles container
         articlesContainer.appendChild(newArticle);
     })
 }
+
+const createDeleteModal = () => {
+    let modal = document.createElement("div");
+    modal.classList.add("modal");
+    let modalContent = document.createElement("div");
+    modalContent.classList.add("modal__content");
+    let modalTitle = document.createElement("h2");
+    modalTitle.textContent = "Confirmer la suppression de l'article";
+    let modalDetail = document.createElement("p");
+    modalDetail.textContent = "Cette action est irréversible. Voulez-vous vraiment continuer ?"
+    let modalButtons = document.createElement("div");
+    modalButtons.classList.add("modal__buttons");
+    let disagreeButton = document.createElement("button");
+    disagreeButton.textContent = "Annuler";
+    let agreeButton = document.createElement("button");
+    agreeButton.textContent = "Ok";
+    disagreeButton.onclick = () => modal.remove();
+    agreeButton.onclick = () => {
+        deleteArticle();
+        modal.remove();
+    };
+    modalButtons.appendChild(disagreeButton);
+    modalButtons.appendChild(agreeButton);
+    modalContent.appendChild(modalTitle);
+    modalContent.appendChild(modalDetail);
+    modalContent.appendChild(modalButtons);
+    modal.appendChild(modalContent);
+    document.querySelector('main').appendChild(modal);
+}
+
+const deleteArticle = () => {
+
+    // Postman
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("ref", selectedArticle);
+
+    var requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow",
+    };
+
+    fetch("./delete_article.php", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+            if (result?.success) {
+                articles = articles.filter(article => article.id != selectedArticle);
+                createArticles();
+            }
+        })
+        .catch((error) => console.log("error", error));
+
+}
+
 
 const createAddArticleButton = () => {
     if (notAllowed) return;

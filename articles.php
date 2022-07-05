@@ -16,13 +16,16 @@ $response = [];
 if ($adminUser) {
 
     // Query
-    $preparedRequest = $bdd->prepare("SELECT articles.image_url as img, 
+    $preparedRequest = $bdd->prepare("SELECT 
+    articles.id,
+    articles.image_url as img, 
     articles.title, 
     articles.content, 
     articles.creation_date, 
     categories.title as category_name, 
     users.lastname as last_name, 
     users.firstname as first_name, 
+    users.is_admin as user_admin,
     articles.status
     FROM articles
     INNER JOIN categories ON articles.category_id=categories.id
@@ -40,6 +43,7 @@ if ($adminUser) {
      categories.title as category_name, 
      users.lastname as last_name, 
      users.firstname as first_name, 
+     users.is_admin as user_admin,
      articles.status
      FROM articles
      INNER JOIN categories ON articles.category_id=categories.id

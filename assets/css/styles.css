@@ -256,7 +256,7 @@ main {
 .articles article .article__img i {
   position: absolute;
   top: 15px;
-  z-index: 110;
+  z-index: 10;
   right: 15px;
   cursor: pointer;
   background-color: #f8475d;
@@ -267,6 +267,10 @@ main {
   justify-content: center;
   border-radius: 50%;
   padding: 10px;
+}
+.articles article .article__img i:hover:before {
+  -webkit-animation: bounceup 0.25s alternate ease infinite;
+  animation: bounceup 0.25s alternate ease infinite;
 }
 .articles article .article__category {
   font-size: 0.75rem;
@@ -294,9 +298,16 @@ main {
   color: #4a5078;
   word-wrap: break-word;
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.articles article .article__social {
+  display: flex;
+  color: #1d2456;
+  justify-content: space-between;
+  border-top: 1px solid #e8e9ee;
+  padding-block: 1.25rem;
 }
 .articles article .article__footer {
   display: flex;
@@ -311,8 +322,11 @@ main {
   align-items: center;
   gap: 0.25rem;
 }
-.articles article .article__footer .article__author i {
+.articles article .article__footer .article__author > i {
   color: #8e92ab;
+}
+.articles article .article__footer .article__author > i:nth-of-type(2) {
+  color: #f8475d;
 }
 .articles article .article__footer .article__author span {
   position: relative;
@@ -320,6 +334,7 @@ main {
   font-weight: 500;
   transition: all 0.3s ease;
   color: #1d2456;
+  display: flex;
 }
 .articles article .article__footer .article__author span:hover {
   color: #f8475d;
@@ -435,8 +450,70 @@ form .form__inner button {
   font-size: 1.75rem;
   color: #f0f3ee;
 }
+.add__article__btn:hover i {
+  -webkit-animation: wiggle 0.25s alternate ease infinite;
+  animation: wiggle 0.25s alternate ease infinite;
+}
 
-/* Add Animation */
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-animation-name: fadeIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: fadeIn;
+  animation-duration: 0.4s;
+}
+.modal .modal__content {
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+  background-color: #f0f3ee;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: min(520px, 95%);
+  -webkit-animation-name: slideInFromBottom;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideInFromBottom;
+  animation-duration: 0.4s;
+}
+.modal .modal__content h2 {
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: #1d2456;
+}
+.modal .modal__content p {
+  color: #4a5078;
+  margin-bottom: 0.75rem;
+}
+.modal .modal__buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+.modal .modal__buttons button {
+  color: #f8475d;
+  text-transform: uppercase;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0.375rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.modal .modal__buttons button:hover {
+  background-color: rgba(248, 71, 93, 0.1019607843);
+}
+
+/* Animations */
 @-webkit-keyframes slideIn {
   from {
     transform: translateY(-150%);
@@ -446,6 +523,18 @@ form .form__inner button {
 @keyframes slideIn {
   from {
     transform: translateY(-150%);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes slideInFromBottom {
+  from {
+    transform: translateY(150%);
+    opacity: 0;
+  }
+}
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(150%);
     opacity: 0;
   }
 }
@@ -463,6 +552,38 @@ form .form__inner button {
   }
   to {
     opacity: 1;
+  }
+}
+@-webkit-keyframes wiggle {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(10deg);
+  }
+}
+@keyframes wiggle {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(10deg);
+  }
+}
+@-webkit-keyframes bounceup {
+  from {
+    -webkit-transform: translateY(0);
+  }
+  to {
+    -webkit-transform: translateY(-2px);
+  }
+}
+@keyframes bounceup {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-2px);
   }
 }
 
