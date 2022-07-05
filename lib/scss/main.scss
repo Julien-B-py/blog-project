@@ -286,6 +286,34 @@ main {
       position: relative;
       color: #f0f3ee;
 
+      .article__social {
+        display: flex;
+        color: $bg;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        gap:1rem;
+        background-color: #f8475dbf;
+        border-radius: 4px 0 0 0;
+
+        .article__likes,
+        .article__comments {
+          display: flex;
+          gap: 0.25rem;
+          align-items: baseline;
+          cursor: pointer;
+        }
+
+        .article__liked {
+          color: $text;
+        }
+
+      }
+
       img {
         width: 100%;
         aspect-ratio: 1;
@@ -293,7 +321,7 @@ main {
         transition: all 0.3s ease;
       }
 
-      i {
+      &>i {
         position: absolute;
         top: 15px;
         z-index: 10;
@@ -352,13 +380,7 @@ main {
       overflow: hidden;
     }
 
-    .article__social {
-      display: flex;
-      color: #1d2456;
-      justify-content: space-between;
-      border-top: 1px solid #e8e9ee;
-      padding-block: 1.25rem;
-    }
+
 
     .article__footer {
       display: flex;
@@ -676,11 +698,21 @@ form {
 }
 
 @-webkit-keyframes bounceup {
-  from { -webkit-transform: translateY(0); }
-  to   { -webkit-transform: translateY(-2px); }
+  from {
+    -webkit-transform: translateY(0);
+  }
+
+  to {
+    -webkit-transform: translateY(-2px);
+  }
 }
 
 @keyframes bounceup {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-2px); }
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-2px);
+  }
 }

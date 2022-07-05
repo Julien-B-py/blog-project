@@ -28,6 +28,7 @@ fetch(articlesUrl)
     .then((data) => {
 
         articles = data.articles;
+        // console.log(articles)
         notAllowed = data.restricted;
         createArticles();
         createAddArticleButton();
@@ -80,14 +81,16 @@ const createArticles = () => {
         let articleLikesIcon = document.createElement("i");
         articleLikesIcon.classList.add("fa-solid", "fa-thumbs-up");
         articleLikes.appendChild(articleLikesIcon);
+        articleLikes.appendChild(document.createTextNode(`${article.liking_users}`));
         let articleComments = document.createElement("div");
         articleComments.classList.add("article__comments");
         let articleCommentsIcon = document.createElement("i");
         articleCommentsIcon.classList.add("fa-solid", "fa-comment");
         articleComments.appendChild(articleCommentsIcon);
+        articleComments.appendChild(document.createTextNode("0"));
         articleSocial.appendChild(articleLikes);
         articleSocial.appendChild(articleComments);
-        newArticle.appendChild(articleSocial);
+        articleImgDiv.appendChild(articleSocial);
 
         // Create article footer (author / date)
         let articleFooter = document.createElement("div");
@@ -116,6 +119,20 @@ const createArticles = () => {
         articleDate.appendChild(articleDateText);
         articleFooter.appendChild(articleDate);
         newArticle.appendChild(articleFooter);
+
+        // If article is liked by user color thumbs up in blue
+        if (article.liked) {
+            articleLikes.classList.add("article__liked");
+        }
+
+        // LIKE
+        articleLikes.onclick = (e) => {
+            if (articleLikes.classList.contains("article__liked")) {
+                dislikeArticle(e, article.id);
+                return;
+            }
+            likeArticle(e, article.id);
+        };
 
         // Delete article button
         if (!notAllowed) {
@@ -274,4 +291,63 @@ const createNewArticleModal = () => {
     document.body.appendChild(form);
 
     document.querySelector("form").style.display = "block";
+}
+
+const dislikeArticle = (e, articleId) => {
+    let clickedLikeDiv = e.target.closest('.article__likes');
+
+    let header = new Headers();
+    header.append("Content-Type", "application/x-www-form-urlencoded");
+
+    let urlencoded = new URLSearchParams();
+    urlencoded.append("id", articleId);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: header,
+        body: urlencoded,
+        redirect: 'follow'
+    };
+
+    fetch("unlike_article.php", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                // Change color to white and decrement article likes count
+                clickedLikeDiv.classList.remove("article__liked");
+                var likesCount = clickedLikeDiv.childNodes[1].nodeValue
+                clickedLikeDiv.childNodes[1].nodeValue = Number(likesCount) - 1;
+
+            }
+        })
+        .catch(error => console.log('error', error));
+}
+
+const likeArticle = (e, articleId) => {
+    let clickedLikeDiv = e.target.closest('.article__likes');
+
+    let header = new Headers();
+    header.append("Content-Type", "application/x-www-form-urlencoded");
+
+    let urlencoded = new URLSearchParams();
+    urlencoded.append("id", articleId);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: header,
+        body: urlencoded,
+        redirect: 'follow'
+    };
+
+    fetch("like_article.php", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                // Change color to blue and increment article likes count
+                clickedLikeDiv.classList.add("article__liked");
+                var likesCount = clickedLikeDiv.childNodes[1].nodeValue
+                clickedLikeDiv.childNodes[1].nodeValue = Number(likesCount) + 1;
+            }
+        })
+        .catch(error => console.log('error', error));
 }
