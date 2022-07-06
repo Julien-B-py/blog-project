@@ -255,6 +255,8 @@ const createNewArticleModal = () => {
 
     // Create selects
     newArticleSelects.forEach((select, index) => {
+        let newInputDiv = document.createElement("div");
+        newInputDiv.classList.add("form__inner__input");
         let selectLabel = document.createElement("label");
         selectLabel.textContent = select.label;
         let newSelect = document.createElement("select");
@@ -277,8 +279,9 @@ const createNewArticleModal = () => {
         }
 
 
-        innerForm.appendChild(selectLabel);
-        innerForm.appendChild(newSelect);
+        newInputDiv.appendChild(selectLabel);
+        newInputDiv.appendChild(newSelect);
+        innerForm.appendChild(newInputDiv);
     })
 
     let button = document.createElement("button");

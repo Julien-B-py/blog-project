@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass = htmlspecialchars($_POST['password']);
     $confirm_pass = htmlspecialchars($_POST['passwordConfirmation']);
 
+    // If form submitted with button
     if ($_POST['registerBtn'] === "S7FPrp6mpi") {
 
         // L'email fourni doit être valide, nous avions effectué une vérification du format email
@@ -39,7 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once('./db_connection.php');
 
         // Query
-        $preparedRequest = $bdd->prepare("INSERT INTO `users` (`mail`, `lastname`, `firstname`, `birthdate`, `password`, `is_admin`) VALUES (:email, :lastname, :firstname, :birthdate, :passw, 0)");
+        $preparedRequest = $bdd->prepare("INSERT INTO `users` (`mail`, `lastname`, `firstname`, `birthdate`, `password`, `is_admin`)
+        VALUES (:email, :lastname, :firstname, :birthdate, :passw, 0)");
 
         $preparedRequest->bindValue(":email", $email, PDO::PARAM_STR);
         $preparedRequest->bindValue(":lastname", $lastName, PDO::PARAM_STR);

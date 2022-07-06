@@ -6,9 +6,9 @@ session_start();
 if (!empty($_SESSION) && $_SESSION['is_admin']) {
     $currentUserId = $_SESSION['current_user'];
 
-    $articleTitle = $_POST['title'];
-    $articleContent = $_POST['content'];
-    $articleImage = $_POST['img'];
+    $articleTitle = htmlspecialchars($_POST['title']);
+    $articleContent = htmlspecialchars($_POST['content']);
+    $articleImage = htmlspecialchars($_POST['img']);
     $articleCategoryId = $_POST['category'];
     $articleStatus = $_POST['status'];
 

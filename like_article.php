@@ -20,7 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $preparedRequest->bindValue(":userId", $userId, PDO::PARAM_INT);
     $preparedRequest->bindValue(":articleId", $postId, PDO::PARAM_INT);
 
-    $preparedRequest->execute();
+    if (!$preparedRequest->execute()) {
+        echo json_encode(['failure' => "Server error"]);
+        return;
+    }
 
     echo json_encode(['success' => true]);
 }

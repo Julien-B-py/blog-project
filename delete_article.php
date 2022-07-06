@@ -12,12 +12,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
         require_once('./db_connection.php');
 
-        // Query
+        // 1st Query : delete associated likes first to prevent constraint error due to article_id foreign key
+        $preparedRequest = $bdd->prepare("DELETE FROM `likes` WHERE `article_id` = :articleId");
+        $preparedRequest->bindValue(":articleId", $articleId, PDO::PARAM_INT);
+        if (!$preparedRequest->execute()) {
+            echo json_encode(['failure' => "Server error"]);
+            return;
+        }
+
+        // 2nd Query : delete the article itself
         $preparedRequest = $bdd->prepare("DELETE FROM `articles` WHERE `articles`.`id` = :articleId");
 
         $preparedRequest->bindValue(":articleId", $articleId, PDO::PARAM_INT);
 
-        $result = $preparedRequest->execute();
+        if (!$preparedRequest->execute()) {
+            echo json_encode(['failure' => "Server error"]);
+            return;
+        }
 
         echo json_encode(['success' => true]);
     }

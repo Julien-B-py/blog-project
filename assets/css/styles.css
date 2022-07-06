@@ -426,14 +426,17 @@ form .form__inner .form__inner__input label {
   font-size: 0.875rem;
   font-weight: 500;
 }
-form .form__inner .form__inner__input input {
+form .form__inner .form__inner__input input,
+form .form__inner .form__inner__input select {
   padding: 0.5rem 1rem;
   border-radius: 4px;
   border: 1px solid #e8e9ee;
   outline: none;
   transition: all 0.3s ease;
+  background-color: #fff;
 }
-form .form__inner .form__inner__input input:focus {
+form .form__inner .form__inner__input input:focus,
+form .form__inner .form__inner__input select:focus {
   border: 1px solid #f8475d;
 }
 form .form__inner button {
