@@ -406,6 +406,35 @@ form .form__inner {
   animation-name: slideIn;
   animation-duration: 0.4s;
 }
+form .form__inner .form__inner__tabs {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+form .form__inner .form__inner__tabs span {
+  background-color: #f8475d;
+  position: absolute;
+  height: 2px;
+  bottom: 0px;
+  left: 0;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+form .form__inner .form__inner__tabs .form__inner__tabs__buttons {
+  display: flex;
+  border-bottom: 1px solid rgba(29, 36, 86, 0.1019607843);
+}
+form .form__inner .form__inner__tabs .form__inner__tabs__buttons button {
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  font-family: "Roboto", sans-serif;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+form .form__inner .form__inner__tabs .form__inner__tabs__buttons .selected {
+  color: #f8475d;
+}
 form .form__inner .form__error__msg {
   font-size: 0.75rem;
   color: #f02849;
@@ -439,7 +468,7 @@ form .form__inner .form__inner__input input:focus,
 form .form__inner .form__inner__input select:focus {
   border: 1px solid #f8475d;
 }
-form .form__inner button {
+form .form__inner > button {
   background-color: #f8475d;
   font-weight: 500;
   cursor: pointer;
@@ -510,6 +539,11 @@ form .form__inner button {
 .modal .modal__content p {
   color: #4a5078;
   margin-bottom: 0.75rem;
+}
+.modal .modal__content p span {
+  color: #f8475d;
+  font-style: italic;
+  font-weight: 900;
 }
 .modal .modal__buttons {
   display: flex;

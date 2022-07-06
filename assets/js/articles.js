@@ -156,9 +156,18 @@ const createDeleteModal = () => {
     let modalContent = document.createElement("div");
     modalContent.classList.add("modal__content");
     let modalTitle = document.createElement("h2");
+    let articleToDeleteTitle = articles.filter(article => article.id === selectedArticle)[0].title;
+    if (articleToDeleteTitle.length > 20) {
+        articleToDeleteTitle = `${articleToDeleteTitle.slice(0, 35)} ...`;
+    }
+
     modalTitle.textContent = "Confirmer la suppression de l'article";
     let modalDetail = document.createElement("p");
-    modalDetail.textContent = "Cette action est irréversible. Voulez-vous vraiment continuer ?"
+    modalDetail.appendChild(document.createTextNode("L'article "));
+    let span = document.createElement("span");
+    span.textContent = `"${articleToDeleteTitle}"`;
+    modalDetail.appendChild(span);
+    modalDetail.appendChild(document.createTextNode(" va être supprimé. Cette action est irréversible. Voulez-vous vraiment continuer ?"));
     let modalButtons = document.createElement("div");
     modalButtons.classList.add("modal__buttons");
     let disagreeButton = document.createElement("button");
@@ -225,75 +234,45 @@ const createNewArticleModal = () => {
     // Create a form dynamically
     let form = document.createElement("form");
     form.setAttribute("method", "POST");
-    form.setAttribute("action", "./add_article.php");
 
     // Create inner form div
     let innerForm = document.createElement("div");
     innerForm.classList.add("form__inner");
 
-    // Title
-    let formTitle = document.createElement("h2");
-    formTitle.textContent = "Publier un article";
-    innerForm.appendChild(formTitle);
-
-    // Create inputs
-    newArticleInputs.forEach((input) => {
-        let newInputDiv = document.createElement("div");
-        newInputDiv.classList.add("form__inner__input");
-        let newInputLabel = document.createElement("label");
-        newInputLabel.setAttribute("for", input.name);
-        newInputLabel.textContent = input.label;
-        newInputDiv.appendChild(newInputLabel);
-        let newInput = document.createElement("input");
-        newInput.setAttribute("type", input.type);
-        newInput.setAttribute("name", input.name);
-        newInput.setAttribute("id", input.name);
-        newInput.setAttribute("required", "");
-        newInputDiv.appendChild(newInput);
-        innerForm.appendChild(newInputDiv);
-    });
-
-    // Create selects
-    newArticleSelects.forEach((select, index) => {
-        let newInputDiv = document.createElement("div");
-        newInputDiv.classList.add("form__inner__input");
-        let selectLabel = document.createElement("label");
-        selectLabel.textContent = select.label;
-        let newSelect = document.createElement("select");
-        newSelect.name = select.name;
-
-        if (index === 0) {
-            articleCategories.forEach((category) => {
-                let option = document.createElement("option");
-                option.value = category.id;
-                option.text = category.title;
-                newSelect.add(option, null);
-            });
-        } else {
-            ['public', 'member', 'draft'].forEach((status) => {
-                let option = document.createElement("option");
-                option.value = status;
-                option.text = status.charAt(0).toUpperCase() + status.slice(1);
-                newSelect.add(option, null);
-            })
-        }
-
-
-        newInputDiv.appendChild(selectLabel);
-        newInputDiv.appendChild(newSelect);
-        innerForm.appendChild(newInputDiv);
-    })
-
-    let button = document.createElement("button");
-    button.setAttribute("name", "registerBtn");
-    button.setAttribute("value", "S7FPrp6mpi");
-    button.textContent = "Valider";
-    innerForm.appendChild(button);
-
     form.appendChild(innerForm);
     document.body.appendChild(form);
-
     document.querySelector("form").style.display = "block";
+
+    // Create tabs container
+    let tabsContainer = document.createElement("div");
+    tabsContainer.classList.add("form__inner__tabs");
+    let tabsContainerButtons = document.createElement("div");
+    tabsContainerButtons.classList.add("form__inner__tabs__buttons");
+    tabsContainer.appendChild(tabsContainerButtons);
+    innerForm.appendChild(tabsContainer);
+
+    // Create tabs buttons
+    ["Article", "Catégorie"].forEach((button, index) => {
+        let tabsButton = document.createElement("button");
+        tabsButton.textContent = button;
+        if (index === 0) {
+            tabsButton.classList.add("selected");
+        }
+        tabsButton.onclick = (e) => {
+            e.preventDefault();
+            moveIndicator(index);
+        }
+        tabsContainerButtons.appendChild(tabsButton);
+    });
+
+    // Create selected tab indicator
+    let tabIndicator = document.createElement("span");
+    let firstTabButtonWidth = document.querySelectorAll(".form__inner__tabs__buttons button")[0].offsetWidth;
+    tabIndicator.style.width = `${firstTabButtonWidth}px`;
+    tabsContainer.appendChild(tabIndicator);
+
+    createNewArticleTab();
+
 }
 
 const dislikeArticle = (e, articleId) => {
@@ -353,4 +332,138 @@ const likeArticle = (e, articleId) => {
             }
         })
         .catch(error => console.log('error', error));
+}
+
+
+
+const moveIndicator = (btnIndex) => {
+    let tabIndicator = document.querySelector(".form__inner__tabs span");
+    let tabsButtons = document.querySelectorAll(".form__inner__tabs__buttons button");
+    let clickedButton = tabsButtons[btnIndex];
+    let clickedTabButtonWidth = clickedButton.offsetWidth;
+    let clickedTabXPosition = 0;
+    for (let i = 0; i < btnIndex; i++) {
+        clickedTabXPosition = clickedTabXPosition + tabsButtons[btnIndex - 1].offsetWidth;
+    }
+    tabIndicator.style.width = `${clickedTabButtonWidth}px`;
+    tabIndicator.style.left = `${clickedTabXPosition}px`;
+    tabsButtons.forEach(button => {
+        if (button.classList.contains("selected")) {
+            button.classList.remove("selected");
+        }
+    })
+    clickedButton.classList.add("selected");
+
+    if (btnIndex === 0) createNewArticleTab();
+    if (btnIndex === 1) createNewCategoryTab();
+
+}
+
+
+const createNewArticleTab = () => {
+    let innerForm = document.querySelector(".form__inner");
+    let form = document.querySelector("form");
+    form.setAttribute("action", "./add_article.php");
+
+    // Clear the form
+    while (innerForm.childNodes.length > 1) {
+        innerForm.removeChild(innerForm.lastChild);
+    }
+
+    // Title
+    let formTitle = document.createElement("h2");
+    formTitle.textContent = "Publier un article";
+    innerForm.appendChild(formTitle);
+
+    // Create inputs
+    newArticleInputs.forEach((input) => {
+        let newInputDiv = document.createElement("div");
+        newInputDiv.classList.add("form__inner__input");
+        let newInputLabel = document.createElement("label");
+        newInputLabel.setAttribute("for", input.name);
+        newInputLabel.textContent = input.label;
+        newInputDiv.appendChild(newInputLabel);
+        let newInput = document.createElement("input");
+        newInput.setAttribute("type", input.type);
+        newInput.setAttribute("name", input.name);
+        newInput.setAttribute("id", input.name);
+        newInput.setAttribute("required", "");
+        newInputDiv.appendChild(newInput);
+        innerForm.appendChild(newInputDiv);
+    });
+
+    // Create selects
+    newArticleSelects.forEach((select, index) => {
+        let newInputDiv = document.createElement("div");
+        newInputDiv.classList.add("form__inner__input");
+        let selectLabel = document.createElement("label");
+        selectLabel.textContent = select.label;
+        let newSelect = document.createElement("select");
+        newSelect.name = select.name;
+
+        if (index === 0) {
+            articleCategories.forEach((category) => {
+                let option = document.createElement("option");
+                option.value = category.id;
+                option.text = category.title;
+                newSelect.add(option, null);
+            });
+        } else {
+            ['public', 'member', 'draft'].forEach((status) => {
+                let option = document.createElement("option");
+                option.value = status;
+                option.text = status.charAt(0).toUpperCase() + status.slice(1);
+                newSelect.add(option, null);
+            })
+        }
+
+
+        newInputDiv.appendChild(selectLabel);
+        newInputDiv.appendChild(newSelect);
+        innerForm.appendChild(newInputDiv);
+    })
+
+    let button = document.createElement("button");
+    button.setAttribute("name", "registerBtn");
+    button.setAttribute("value", "S7FPrp6mpi");
+    button.textContent = "Valider";
+    innerForm.appendChild(button);
+}
+
+
+createNewCategoryTab = () => {
+    let innerForm = document.querySelector(".form__inner");
+    let form = document.querySelector("form");
+    form.setAttribute("action", "./add_category.php");
+
+    // Clear the form
+    while (innerForm.childNodes.length > 1) {
+        innerForm.removeChild(innerForm.lastChild);
+    }
+
+    // Title
+    let formTitle = document.createElement("h2");
+    formTitle.textContent = "Créer une catégorie";
+    innerForm.appendChild(formTitle);
+
+    // Create input
+    let newInputDiv = document.createElement("div");
+    newInputDiv.classList.add("form__inner__input");
+    let newInputLabel = document.createElement("label");
+    newInputLabel.setAttribute("for", "category");
+    newInputLabel.textContent = "Catégorie";
+    newInputDiv.appendChild(newInputLabel);
+    let newInput = document.createElement("input");
+    newInput.setAttribute("type", "text");
+    newInput.setAttribute("name", "category");
+    newInput.setAttribute("id", "category");
+    newInput.setAttribute("required", "");
+    newInputDiv.appendChild(newInput);
+    innerForm.appendChild(newInputDiv);
+
+    let button = document.createElement("button");
+    button.setAttribute("name", "registerBtn");
+    button.setAttribute("value", "S7FPrp6mpi");
+    button.textContent = "Valider";
+    innerForm.appendChild(button);
 }
