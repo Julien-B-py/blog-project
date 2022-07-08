@@ -267,6 +267,10 @@ main {
   gap: 0.25rem;
   align-items: baseline;
   cursor: pointer;
+  transition: color 0.3s;
+}
+.articles article .article__img .article__social .article__likes:not(.article__liked) i:hover {
+  color: #fdc8ce;
 }
 .articles article .article__img .article__social .article__liked {
   color: #1d2456;
@@ -639,6 +643,36 @@ form .form__inner > button {
   to {
     transform: translateY(-2px);
   }
+}
+.snackbar {
+  width: 290px;
+  height: 50px;
+  border-radius: 4px;
+  z-index: 120;
+  position: fixed;
+  display: flex;
+  bottom: -60px;
+  left: 24px;
+  right: auto;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 1rem;
+}
+
+.snackbar--success {
+  background-color: #6bb61b;
+  color: #040202;
+}
+
+.snackbar--warning {
+  background-color: #fec682;
+  color: #040202;
+}
+
+.snackbar--error {
+  background-color: #f90c6b;
+  color: #fdfefe;
 }
 
 /*# sourceMappingURL=styles.css.map */

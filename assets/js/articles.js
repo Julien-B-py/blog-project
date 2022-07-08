@@ -18,10 +18,7 @@ let notAllowed;
 let articleCategories;
 let selectedArticle;
 
-fetch(articleCategoriesUrl)
-    .then((response) => response.json())
-    .then((data) => articleCategories = data)
-    .catch(err => console.error('error:' + err));
+
 
 fetch(articlesUrl)
     .then((response) => response.json())
@@ -34,7 +31,12 @@ fetch(articlesUrl)
         createAddArticleButton();
 
     })
-    .catch(err => console.error('error:' + err));
+    .catch(err => displaySnackbar({ snackbarType: "error", snackbarMsg: "Server error !" }));
+
+fetch(articleCategoriesUrl)
+    .then((response) => response.json())
+    .then((data) => articleCategories = data)
+    .catch(err => displaySnackbar({ snackbarType: "error", snackbarMsg: "Server error !" }));
 
 
 const createArticles = () => {
@@ -208,6 +210,7 @@ const deleteArticle = () => {
         .then((response) => response.json())
         .then((result) => {
             if (result?.success) {
+                displaySnackbar({ snackbarMsg: "Article supprimé avec succès." })
                 articles = articles.filter(article => article.id != selectedArticle);
                 createArticles();
             }
@@ -466,4 +469,48 @@ createNewCategoryTab = () => {
     button.setAttribute("value", "S7FPrp6mpi");
     button.textContent = "Valider";
     innerForm.appendChild(button);
+}
+
+/*
+|
+|   SNACKBAR 
+|
+*/
+const snackbarTypes = {
+    "success": "fa-check",
+    "error": "fa-circle-exclamation",
+    "warning": "fa-triangle-exclamation"
+};
+
+// Give notifications to the user
+const displaySnackbar = ({ closingDelay = 3000, snackbarType = "success", snackbarMsg } = {}) => {
+
+    // Check if one feedback exists already
+    // If so interrupt to not stack them
+    if (document.querySelector(".feedback")) {
+        return;
+    }
+
+    // If not existing create a div with feedback class
+    let snackbar = document.createElement("div");
+    snackbar.classList.add("snackbar", `snackbar--${snackbarType}`);
+    // Add icon and text to the div and add the whole element to the document body
+    let snackbarIcon = document.createElement("i");
+    snackbar.appendChild(snackbarIcon);
+    let snackbarText = document.createTextNode(snackbarMsg);
+    snackbar.appendChild(snackbarText);
+
+    // Depending on requested snackbar type : change icon and background color
+    snackbarIcon.classList.add("fa-solid", snackbarTypes[snackbarType]);
+
+    document.body.appendChild(snackbar);
+
+    // Slide in animation
+    gsap.to(".snackbar", { bottom: '24px' });
+
+    // Slide out animation then remove the element from the DOM after specified delay
+    setTimeout(() => {
+        gsap.to(".snackbar", { bottom: '-60px', onComplete: () => snackbar.remove() });
+    }, closingDelay);
+
 }
