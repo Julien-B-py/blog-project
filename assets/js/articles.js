@@ -29,14 +29,21 @@ fetch(articlesUrl)
         notAllowed = data.restricted;
         createArticles();
         createAddArticleButton();
+        loader.hide();
 
     })
-    .catch(err => displaySnackbar({ snackbarType: "error", snackbarMsg: "Server error !" }));
+    .catch(err => {
+        displaySnackbar({ snackbarType: "error", snackbarMsg: "Server error !" });
+        loader.hide();
+    });
 
 fetch(articleCategoriesUrl)
     .then((response) => response.json())
     .then((data) => articleCategories = data)
-    .catch(err => displaySnackbar({ snackbarType: "error", snackbarMsg: "Server error !" }));
+    .catch(err => {
+        displaySnackbar({ snackbarType: "error", snackbarMsg: "Server error !" });
+        loader.hide();
+    });
 
 
 const createArticles = () => {

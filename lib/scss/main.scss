@@ -781,7 +781,7 @@ form {
   width: 290px;
   height: 50px;
   border-radius: 4px;
-  z-index: 120;
+  z-index: 131;
   position: fixed;
   display: flex;
   bottom: -60px;
@@ -806,4 +806,91 @@ form {
 .snackbar--error {
   background-color: #f90c6b;
   color: #fdfefe;
+}
+
+.loading {
+  position: fixed;
+  z-index: 130;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $bg;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+
+  .loading__inner {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+
+    div {
+      position: absolute;
+      top: 33px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: $accent;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+
+      &:nth-child(1) {
+        left: 8px;
+        animation: loading-c1 0.6s infinite;
+      }
+
+      &:nth-child(2) {
+        left: 8px;
+        animation: loading-c2 0.6s infinite;
+      }
+
+      &:nth-child(3) {
+        left: 32px;
+        animation: loading-c2 0.6s infinite;
+      }
+
+      &:nth-child(4) {
+        left: 56px;
+        animation: loading-c3 0.6s infinite;
+      }
+
+    }
+  }
+}
+
+.loading--hidden {
+  opacity: 0;
+}
+
+
+@keyframes loading-c1 {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes loading-c2 {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+@keyframes loading-c3 {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
 }
