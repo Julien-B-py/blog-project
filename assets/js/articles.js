@@ -29,12 +29,12 @@ fetch(articlesUrl)
         notAllowed = data.restricted;
         createArticles();
         createAddArticleButton();
-        loader.hide();
+        loading.hide();
 
     })
     .catch(err => {
         displaySnackbar({ snackbarType: "error", snackbarMsg: "Server error !" });
-        loader.hide();
+        loading.hide();
     });
 
 fetch(articleCategoriesUrl)
@@ -42,7 +42,7 @@ fetch(articleCategoriesUrl)
     .then((data) => articleCategories = data)
     .catch(err => {
         displaySnackbar({ snackbarType: "error", snackbarMsg: "Server error !" });
-        loader.hide();
+        loading.hide();
     });
 
 

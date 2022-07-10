@@ -1,3 +1,6 @@
+let loading = new Loading();
+loading.show();
+
 const connectMenuOptions = ["Se connecter", "Créer un compte"];
 
 // const connectBtn = document.querySelector("button");
