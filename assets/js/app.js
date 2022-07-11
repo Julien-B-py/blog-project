@@ -193,8 +193,14 @@ const createLoginModal = () => {
   document.querySelector("form").style.display = "block";
 };
 
-const adjustElementPosition = (element) => {
-  let connectBtnRect = connectBtn.getBoundingClientRect();
+const adjustElementPosition = (element, btn = 0) => {
+  let connectBtnRect;
+  if (!btn) {
+    connectBtnRect = connectBtn.getBoundingClientRect();
+  } else {
+    connectBtnRect = btn.getBoundingClientRect();
+  }
+
   let connectMenuRect = element.getBoundingClientRect();
 
   element.style.left = `${connectBtnRect.left - (connectMenuRect.width - connectBtnRect.width)
@@ -241,15 +247,44 @@ window.onload = () => {
 
     navInner.appendChild(logoutBtn);
 
+
+
     logoutBtn.onclick = () => {
 
-      sessionStorage.clear();
+      if (!document.querySelector(".connect__menu")) {
+        const disconnectMenu = document.createElement("div");
+        disconnectMenu.classList.add("connect__menu", "connect__menu--hidden");
 
-      const logoutUrl = "./logout.php";
+        const disconnectMenuList = document.createElement("ul");
+        const disconnectMenuItem = document.createElement("li");
+        disconnectMenuItem.textContent = "Se déconnecter";
+        disconnectMenuList.appendChild(disconnectMenuItem);
+        disconnectMenu.appendChild(disconnectMenuList);
 
-      fetch(logoutUrl)
-        .then((response) => location.reload())
-        .catch(err => console.error('error:' + err));
+        disconnectMenuItem.onclick = () => {
+          // Disconnect the user
+          sessionStorage.clear();
+
+          const logoutUrl = "./logout.php";
+
+          fetch(logoutUrl)
+            .then((response) => location.reload())
+            .catch(err => console.error('error:' + err));
+        }
+
+        document.body.appendChild(disconnectMenu);
+
+        requestAnimationFrame(() => {
+          disconnectMenu.classList.remove("connect__menu--hidden");
+        });
+
+        adjustElementPosition(disconnectMenu, logoutBtn);
+
+
+      }
+
+
+
     };
 
   } else {
