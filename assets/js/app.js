@@ -6,7 +6,7 @@ const connectMenuOptions = ["Se connecter", "Créer un compte"];
 // const connectBtn = document.querySelector("button");
 let connectBtn;
 
-const navInner = document.querySelector(".nav__inner");
+const navInner = document.querySelector(".nav__right");
 
 let connectMenuVisible = false;
 
@@ -324,3 +324,5 @@ window.onload = () => {
     };
   }
 };
+
+

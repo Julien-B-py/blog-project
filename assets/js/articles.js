@@ -2,6 +2,7 @@ const articlesContainer = document.querySelector(".articles");
 
 const articlesUrl = "./articles.php";
 const articleCategoriesUrl = "./categories.php";
+const categoriesCountUrl = "./categories_count.php";
 
 const newArticleInputs = [
     { name: "title", label: "Titre", type: "text" },
@@ -13,12 +14,13 @@ const newArticleSelects = [{ name: "category", label: "Catégorie" },
 { name: "status", label: "Statut" }];
 
 let articles;
+let articlesCopy;
 let notAllowed;
 
 let articleCategories;
 let selectedArticle;
 
-
+let alert;
 
 fetch(articlesUrl)
     .then((response) => response.json())
@@ -39,11 +41,49 @@ fetch(articlesUrl)
 
 fetch(articleCategoriesUrl)
     .then((response) => response.json())
-    .then((data) => articleCategories = data)
+    .then((data) => {
+        articleCategories = data;
+    })
     .catch(err => {
         displaySnackbar({ snackbarType: "error", snackbarMsg: "Server error !" });
         loading.hide();
     });
+
+
+fetch(categoriesCountUrl)
+    .then((response) => response.json())
+    .then((data) => {
+        let categoriesFilter = document.querySelector(".filters ul");
+        data.forEach(category => {
+
+            let categoryItem = document.createElement("li");
+            let categoryNameSpan = document.createElement("span");
+            let categoryName = document.createTextNode(category.title);
+            let categoryCount = document.createTextNode(category.count);
+
+            categoryNameSpan.appendChild(categoryName);
+            categoryItem.appendChild(categoryNameSpan);
+            categoryItem.appendChild(categoryCount);
+            categoriesFilter.appendChild(categoryItem);
+
+            categoryItem.onclick = () => {
+                let categoryFilter = category.title.toLowerCase();
+
+                articlesCopy.forEach(article => {
+                    let articleCategory = article.querySelector(".article__category").innerText.toLowerCase();
+
+                    if (articleCategory.includes(categoryFilter)) {
+                        articlesContainer.appendChild(article);
+                        return;
+                    }
+                    article.remove();
+
+                });
+            }
+
+        });
+
+    })
 
 
 const createArticles = () => {
@@ -150,52 +190,21 @@ const createArticles = () => {
             articleImgDiv.appendChild(articleDeleteIcon);
             articleDeleteIcon.onclick = () => {
                 selectedArticle = article.id;
-                createDeleteModal();
+
+                if (!alert) alert = new Alert(deleteArticle);
+                alert.show();
             };
         }
 
         // Add the article to articles container
         articlesContainer.appendChild(newArticle);
     })
+
+    articlesCopy = document.querySelectorAll("article");
+
 }
 
-const createDeleteModal = () => {
-    let modal = document.createElement("div");
-    modal.classList.add("modal");
-    let modalContent = document.createElement("div");
-    modalContent.classList.add("modal__content");
-    let modalTitle = document.createElement("h2");
-    let articleToDeleteTitle = articles.filter(article => article.id === selectedArticle)[0].title;
-    if (articleToDeleteTitle.length > 20) {
-        articleToDeleteTitle = `${articleToDeleteTitle.slice(0, 35)} ...`;
-    }
 
-    modalTitle.textContent = "Confirmer la suppression de l'article";
-    let modalDetail = document.createElement("p");
-    modalDetail.appendChild(document.createTextNode("L'article "));
-    let span = document.createElement("span");
-    span.textContent = `"${articleToDeleteTitle}"`;
-    modalDetail.appendChild(span);
-    modalDetail.appendChild(document.createTextNode(" va être supprimé. Cette action est irréversible. Voulez-vous vraiment continuer ?"));
-    let modalButtons = document.createElement("div");
-    modalButtons.classList.add("modal__buttons");
-    let disagreeButton = document.createElement("button");
-    disagreeButton.textContent = "Annuler";
-    let agreeButton = document.createElement("button");
-    agreeButton.textContent = "Ok";
-    disagreeButton.onclick = () => modal.remove();
-    agreeButton.onclick = () => {
-        deleteArticle();
-        modal.remove();
-    };
-    modalButtons.appendChild(disagreeButton);
-    modalButtons.appendChild(agreeButton);
-    modalContent.appendChild(modalTitle);
-    modalContent.appendChild(modalDetail);
-    modalContent.appendChild(modalButtons);
-    modal.appendChild(modalContent);
-    document.querySelector('main').appendChild(modal);
-}
 
 const deleteArticle = () => {
 
@@ -521,3 +530,28 @@ const displaySnackbar = ({ closingDelay = 3000, snackbarType = "success", snackb
     }, closingDelay);
 
 }
+
+/*
+|
+|   FILTER ARTICLES
+|
+*/
+let searchInput = document.querySelector(".nav__right input");
+
+searchInput.addEventListener('input', (event) => {
+
+    const { value } = event.target;
+
+    articlesCopy.forEach(article => {
+        let articleTitle = article.getElementsByTagName("h2")[0].innerText.toLowerCase();
+        let articleContent = article.getElementsByTagName("p")[0].innerText.toLowerCase();
+
+        if (articleTitle.includes(value.toLowerCase()) || articleContent.includes(value.toLowerCase())) {
+            articlesContainer.appendChild(article);
+            return;
+        }
+        article.remove();
+
+    });
+
+});

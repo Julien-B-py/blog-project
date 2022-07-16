@@ -206,6 +206,24 @@ nav {
   }
 }
 
+.nav__right {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  input {
+    width: 250px;
+    align-self: stretch;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #e8e9ee;
+    font-size: 1rem;
+    color: $text;
+  }
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -249,7 +267,6 @@ main {
 }
 
 .articles {
-  margin-top: 200px;
   margin-bottom: 80px;
   display: flex;
   gap: 2rem;
@@ -893,4 +910,49 @@ form {
   100% {
     transform: scale(0);
   }
+}
+
+.filters {
+  padding: 1.25rem;
+  background-color: #f8f9f7;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  margin: 200px 0 30px;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  gap: 1.25rem;
+
+  .filters__category {
+    text-transform: uppercase;
+    font-weight: 500;
+    color: $text;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    list-style: none;
+
+
+
+    li {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      gap: 1.25rem;
+      transition: all 0.3s ease;
+      color: #8e92ab;
+      align-items: center;
+
+      span {
+        font-size: 0.875rem;
+      }
+
+      &:hover {
+        color: $accent;
+      }
+    }
+  }
+
 }

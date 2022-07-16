@@ -12,12 +12,12 @@ function Loading(color, fadeOutDelay = 300) {
     this.fadeOutDelay = fadeOutDelay;
 
     /**
-     * @name show
-     * @description Create the loading animation if needed and show it.
+     * @name create
+     * @description Creates the loading animation structure.
      * 
      * @returns {undefined}
-     */
-    this.show = () => {
+    */
+    this.create = () => {
         // If loading <div> has not been created yet
         if (!this.loading) {
             // Create loading <div> and all required childrens
@@ -33,15 +33,24 @@ function Loading(color, fadeOutDelay = 300) {
             }
             this.loading.appendChild(this.loadingInner);
         }
+    };
+
+    /**
+     * @name show
+     * @description Displays the loading animation.
+     * 
+     * @returns {undefined}
+     */
+    this.show = () => {
         // If the loading <div> has the class hidden, remove it
         this.loading.classList.contains("loading--hidden") && this.loading.classList.remove("loading--hidden");
         // Add loading <div> to document body to make it visible
         document.body.appendChild(this.loading);
-    }
+    };
 
     /**
      * @name hide
-     * @description Hide the loading animation if visible.
+     * @description Hides the loading animation if visible.
      * 
      * @returns {undefined}
      */
@@ -53,5 +62,8 @@ function Loading(color, fadeOutDelay = 300) {
             // Fade out the loading <div> after a preset amount of time
             setTimeout(() => this.loading.classList.add("loading--hidden"), this.fadeOutDelay);
         }
-    }
+    };
+
+    this.create();
+
 };
