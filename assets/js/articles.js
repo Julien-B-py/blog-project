@@ -54,7 +54,7 @@ fetch(categoriesCountUrl)
     .then((response) => response.json())
     .then((data) => {
         let categoriesFilter = document.querySelector(".filters ul");
-        data.forEach(category => {
+        data.forEach((category, index) => {
 
             let categoryItem = document.createElement("li");
             let categoryNameSpan = document.createElement("span");
@@ -67,12 +67,16 @@ fetch(categoriesCountUrl)
             categoriesFilter.appendChild(categoryItem);
 
             categoryItem.onclick = () => {
+                document.querySelectorAll(".filters li").forEach((category, id2) => {
+                    if (index !== id2) category.classList.remove("filters__category__selected");
+                });
+                categoryItem.classList.toggle("filters__category__selected");
                 let categoryFilter = category.title.toLowerCase();
 
                 articlesCopy.forEach(article => {
                     let articleCategory = article.querySelector(".article__category").innerText.toLowerCase();
 
-                    if (articleCategory.includes(categoryFilter)) {
+                    if (articleCategory.includes(categoryFilter) || !document.querySelectorAll(".filters__category__selected").length) {
                         articlesContainer.appendChild(article);
                         return;
                     }
@@ -83,8 +87,7 @@ fetch(categoriesCountUrl)
 
         });
 
-    })
-
+    });
 
 const createArticles = () => {
 
@@ -188,7 +191,8 @@ const createArticles = () => {
             let articleDeleteIcon = document.createElement("i");
             articleDeleteIcon.classList.add("fa-solid", "fa-trash");
             articleImgDiv.appendChild(articleDeleteIcon);
-            articleDeleteIcon.onclick = () => {
+            articleDeleteIcon.onclick = (e) => {
+                animateButton(e);
                 selectedArticle = article.id;
 
                 if (!alert) alert = new Alert(deleteArticle);
@@ -245,7 +249,10 @@ const createAddArticleButton = () => {
     addArticleBtn.appendChild(addArticleBtnIcon);
     document.querySelector('main').appendChild(addArticleBtn);
 
-    addArticleBtn.addEventListener("click", () => createNewArticleModal());
+    addArticleBtn.addEventListener("click", (e) => {
+        animateButton(e);
+        createNewArticleModal()
+    });
 
 }
 
@@ -279,6 +286,7 @@ const createNewArticleModal = () => {
         }
         tabsButton.onclick = (e) => {
             e.preventDefault();
+            animateButton(e);
             moveIndicator(index);
         }
         tabsContainerButtons.appendChild(tabsButton);
@@ -446,6 +454,7 @@ const createNewArticleTab = () => {
     button.setAttribute("name", "registerBtn");
     button.setAttribute("value", "S7FPrp6mpi");
     button.textContent = "Valider";
+    button.onclick = (e) => animateButton(e);
     innerForm.appendChild(button);
 }
 
@@ -484,6 +493,7 @@ createNewCategoryTab = () => {
     button.setAttribute("name", "registerBtn");
     button.setAttribute("value", "S7FPrp6mpi");
     button.textContent = "Valider";
+    button.onclick = (e) => animateButton(e);
     innerForm.appendChild(button);
 }
 

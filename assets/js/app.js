@@ -27,11 +27,15 @@ const createConnectMenu = () => {
 
   // event listener
   const connectMenuListItems = document.querySelectorAll(".connect__menu li");
-  connectMenuListItems[0].addEventListener("click", () => {
+  connectMenuListItems[0].addEventListener("click", (e) => {
+
+    animateButton(e);
     createLoginModal();
     connectMenu.classList.add("connect__menu--hidden");
   });
-  connectMenuListItems[1].addEventListener("click", () => {
+  connectMenuListItems[1].addEventListener("click", (e) => {
+
+    animateButton(e);
     createRegisterModal();
     connectMenu.classList.add("connect__menu--hidden");
   });
@@ -91,6 +95,7 @@ const createRegisterModal = () => {
   button.setAttribute("name", "registerBtn");
   button.setAttribute("value", "S7FPrp6mpi");
   button.textContent = "Valider";
+  button.onclick = (e) => animateButton(e);
   innerForm.appendChild(button);
 
   form.appendChild(innerForm);
@@ -182,6 +187,7 @@ const createLoginModal = () => {
 
   button.addEventListener("click", (e) => {
     e.preventDefault();
+    animateButton(e);
     submitLogin();
   });
 
@@ -249,7 +255,9 @@ window.onload = () => {
 
 
 
-    logoutBtn.onclick = () => {
+    logoutBtn.onclick = (e) => {
+
+      animateButton(e);
 
       if (!document.querySelector(".connect__menu")) {
         const disconnectMenu = document.createElement("div");
@@ -261,7 +269,8 @@ window.onload = () => {
         disconnectMenuList.appendChild(disconnectMenuItem);
         disconnectMenu.appendChild(disconnectMenuList);
 
-        disconnectMenuItem.onclick = () => {
+        disconnectMenuItem.onclick = (e) => {
+          animateButton(e);
           // Disconnect the user
           sessionStorage.clear();
 
@@ -296,7 +305,10 @@ window.onload = () => {
 
     navInner.appendChild(connectBtn);
 
-    connectBtn.onclick = () => {
+    connectBtn.onclick = (e) => {
+
+      animateButton(e);
+
       // Create menu in the DOM if it doesnt exist already
       if (!document.querySelector(".connect__menu")) createConnectMenu();
 
@@ -326,3 +338,19 @@ window.onload = () => {
 };
 
 
+const animateButton = (e) => {
+  // let x = e.clientX - e.currentTarget.offsetLeft;
+  // let y = e.clientY - e.currentTarget.offsetTop;
+
+  let rect = e.target.getBoundingClientRect();
+  let x = e.clientX - rect.left; //x position within the element.
+  let y = e.clientY - rect.top;  //y position within the element.
+
+  let buttonAnim = document.createElement("div");
+  buttonAnim.classList.add("wave");
+  buttonAnim.style.left = `${x}px`;
+  buttonAnim.style.top = `${y}px`;
+  e.currentTarget.appendChild(buttonAnim);
+
+  setTimeout(() => buttonAnim.remove(), 1000);
+}

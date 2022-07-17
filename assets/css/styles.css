@@ -134,6 +134,7 @@ nav button {
   justify-content: center;
   align-items: center;
   gap: 0.25rem;
+  overflow: hidden;
 }
 
 .nav__left {
@@ -218,6 +219,8 @@ main {
   list-style: none;
   white-space: nowrap;
   user-select: none;
+  position: relative;
+  overflow: hidden;
 }
 .connect__menu ul li:hover {
   background-color: #c6394a;
@@ -311,6 +314,7 @@ main {
   justify-content: center;
   border-radius: 50%;
   padding: 10px;
+  overflow: hidden;
 }
 .articles article .article__img > i:hover:before {
   -webkit-animation: bounceup 0.25s alternate ease infinite;
@@ -451,6 +455,8 @@ form .form__inner .form__inner__tabs .form__inner__tabs__buttons button {
   background: transparent;
   border: none;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 form .form__inner .form__inner__tabs .form__inner__tabs__buttons .selected {
   color: #f8475d;
@@ -498,6 +504,8 @@ form .form__inner > button {
   font-size: 1rem;
   font-family: "Roboto", sans-serif;
   color: #f0f3ee;
+  position: relative;
+  overflow: hidden;
 }
 
 .add__article__btn {
@@ -514,6 +522,7 @@ form .form__inner > button {
   justify-content: center;
   border-radius: 50%;
   padding: 10px;
+  overflow: hidden;
 }
 .add__article__btn i {
   font-size: 1.75rem;
@@ -582,6 +591,8 @@ form .form__inner > button {
   padding: 0.375rem 0.5rem;
   border-radius: 4px;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 .modal .modal__buttons button:hover {
   background-color: rgba(248, 71, 93, 0.1019607843);
@@ -785,6 +796,10 @@ form .form__inner > button {
   gap: 1rem;
   list-style: none;
 }
+.filters ul .filters__category__selected {
+  color: #f8475d;
+  font-weight: 500;
+}
 .filters ul li {
   cursor: pointer;
   display: flex;
@@ -796,9 +811,31 @@ form .form__inner > button {
 }
 .filters ul li span {
   font-size: 0.875rem;
+  transition: all 0.3s ease;
 }
 .filters ul li:hover {
   color: #f8475d;
+}
+.filters ul li:hover span {
+  transform: translateX(4px);
+}
+
+.wave {
+  position: absolute;
+  background: #fff;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  animation: wave 0.5s ease-in;
+  width: 200%;
+  aspect-ratio: 1;
+  opacity: 0.5;
+}
+
+@keyframes wave {
+  to {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */
